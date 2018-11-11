@@ -245,13 +245,20 @@ public class UpdateScopeAction implements Serializable {
 	}
 
 	private boolean validateDisplayName(String displayName) throws Exception {
-		List<OxAuthScope> allScopes = scopeService.getAllScopesList();
+		/*List<OxAuthScope> allScopes = scopeService.getAllScopesList();
 		boolean rejected = false;
 		for (OxAuthScope scope : allScopes) {
 			if (scope.getDisplayName().equalsIgnoreCase(displayName)) {
 				rejected = true;
 				break;
 			}
+		}*/
+		// Commented the above block as the getAllScopesList() method doesn't exists and its not
+		// proper to get all scopes and then check for the required. Also the getAllScopesList() method is not defined in ScopeService.
+		OxAuthScope oxAuthScope = scopeService.getScopeByDisplayName(displayName);
+		boolean rejected = false;
+		if (null!=oxAuthScope && null!=oxAuthScope.getInum()) {
+			rejected = true;
 		}
 		if (rejected) {
 			facesMessages.add(FacesMessage.SEVERITY_ERROR,
